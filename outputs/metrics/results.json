@@ -1,0 +1,331 @@
+{
+  "generated_at": "2026-11-26 02:06:03",
+  "elapsed_s": 840.9,
+  "budgets": {
+    "width": 256,
+    "height": 160,
+    "reference_spp": 1024,
+    "fixed_spp": 64,
+    "train_spp": 24,
+    "test_spp": 48,
+    "seeds": [
+      101,
+      202,
+      303
+    ],
+    "lam": 0.35,
+    "eta": 0.15,
+    "half_life": 6.0,
+    "move_retain": 0.25
+  },
+  "coverage": {
+    "all_ok": true,
+    "checks": [
+      {
+        "name": "guide_pdf_normalizes",
+        "ok": true,
+        "max_abs_error": 1.1102230246251565e-16,
+        "tolerance": 0.02
+      },
+      {
+        "name": "uniform_floor_every_direction",
+        "ok": true,
+        "min_guide_pdf": 0.015915494309189534,
+        "guaranteed_floor": 0.015915494309189534
+      },
+      {
+        "name": "true_mixture_pdf_and_coverage",
+        "ok": true,
+        "pdf_eval_max_abs_diff": 0.0,
+        "hemisphere_support_ok": true,
+        "bin_coverage_fraction": 1.0,
+        "bins_visited": 288,
+        "bins_total": 288
+      },
+      {
+        "name": "mixture_estimator_known_integral",
+        "ok": true,
+        "estimate": 5.864307648190171,
+        "analytic": 5.864306286700947,
+        "relative_error": 2.3216543575824963e-07
+      },
+      {
+        "name": "cosine_pdf_sanity",
+        "ok": true,
+        "estimate": 3.141592653589793,
+        "analytic": 3.141592653589793,
+        "relative_error": 0.0
+      }
+    ]
+  },
+  "fixed": [
+    {
+      "kind": "window",
+      "label": "小窗口集中光束（含门洞，间接光路径狭窄）",
+      "budget_spp": 64,
+      "seeds": 3,
+      "rows": [
+        {
+          "strategy": "bsdf",
+          "label": "纯 BSDF 采样",
+          "rmse_8": 0.20082,
+          "rmse_16": 0.15488,
+          "rmse_32": 0.11822,
+          "rmse_48": 0.10047,
+          "rmse_64": 0.08954,
+          "rmse_final": 0.08954,
+          "rmse_std": 0.00018,
+          "rmse_hard_roi": 0.09347,
+          "rel_mse_final": 0.04151,
+          "mean_luma": 0.0622
+        },
+        {
+          "strategy": "guide",
+          "label": "方向引导混合",
+          "rmse_8": 0.19041,
+          "rmse_16": 0.14526,
+          "rmse_32": 0.11053,
+          "rmse_48": 0.0941,
+          "rmse_64": 0.08381,
+          "rmse_final": 0.08381,
+          "rmse_std": 0.0002,
+          "rmse_hard_roi": 0.08623,
+          "rel_mse_final": 0.03695,
+          "mean_luma": 0.062
+        }
+      ],
+      "panel": "/outputs/images/fixed_window_panel.png",
+      "chart": "/outputs/images/fixed_window_convergence.png",
+      "dist_fig": "/outputs/images/dist_window_probe.png",
+      "ablation": {
+        "spp": 48,
+        "lam": 0.6,
+        "rows": [
+          {
+            "strategy": "bsdf",
+            "label": "纯 BSDF 采样 (NEE关)",
+            "rmse_final": 0.38669,
+            "rmse_hard_roi": 0.33223,
+            "rel_mse_final": 3.362
+          },
+          {
+            "strategy": "guide",
+            "label": "方向引导混合 (NEE关)",
+            "rmse_final": 0.31396,
+            "rmse_hard_roi": 0.27822,
+            "rel_mse_final": 4.361
+          }
+        ],
+        "rmse_reduction_pct": 18.8,
+        "chart": "/outputs/images/ablation_window_neeoff.png"
+      }
+    },
+    {
+      "kind": "uniform",
+      "label": "较均匀室内（宽大顶灯）",
+      "budget_spp": 64,
+      "seeds": 3,
+      "rows": [
+        {
+          "strategy": "bsdf",
+          "label": "纯 BSDF 采样",
+          "rmse_8": 0.06759,
+          "rmse_16": 0.04983,
+          "rmse_32": 0.0366,
+          "rmse_48": 0.03073,
+          "rmse_64": 0.02731,
+          "rmse_final": 0.02731,
+          "rmse_std": 8e-05,
+          "rmse_hard_roi": 0.02313,
+          "rel_mse_final": 0.00891,
+          "mean_luma": 0.6105
+        },
+        {
+          "strategy": "guide",
+          "label": "方向引导混合",
+          "rmse_8": 0.07614,
+          "rmse_16": 0.05463,
+          "rmse_32": 0.03957,
+          "rmse_48": 0.03301,
+          "rmse_64": 0.02922,
+          "rmse_final": 0.02922,
+          "rmse_std": 9e-05,
+          "rmse_hard_roi": 0.02481,
+          "rel_mse_final": 0.01017,
+          "mean_luma": 0.6104
+        }
+      ],
+      "panel": "/outputs/images/fixed_uniform_panel.png",
+      "chart": "/outputs/images/fixed_uniform_convergence.png",
+      "dist_fig": "/outputs/images/dist_uniform_probe.png",
+      "ablation": {
+        "spp": 48,
+        "lam": 0.6,
+        "rows": [
+          {
+            "strategy": "bsdf",
+            "label": "纯 BSDF 采样 (NEE关)",
+            "rmse_final": 0.1001,
+            "rmse_hard_roi": 0.08958,
+            "rel_mse_final": 0.1006
+          },
+          {
+            "strategy": "guide",
+            "label": "方向引导混合 (NEE关)",
+            "rmse_final": 0.09074,
+            "rmse_hard_roi": 0.07772,
+            "rel_mse_final": 0.08971
+          }
+        ],
+        "rmse_reduction_pct": 9.4,
+        "chart": "/outputs/images/ablation_uniform_neeoff.png"
+      }
+    }
+  ],
+  "move": [
+    {
+      "kind": "window",
+      "label": "小窗口集中光束（含门洞，间接光路径狭窄）",
+      "train_spp": 24,
+      "test_spp": 48,
+      "seeds": 3,
+      "rows": [
+        {
+          "policy": "bsdf",
+          "rmse_8": 0.19801,
+          "rmse_12": 0.17059,
+          "rmse_16": 0.15356,
+          "rmse_24": 0.13178,
+          "rmse_32": 0.1179,
+          "rmse_48": 0.10063,
+          "rmse_final": 0.10063,
+          "rmse_std": 0.00044,
+          "rel_mse_final": 0.055,
+          "mean_luma": 0.0634
+        },
+        {
+          "policy": "stale",
+          "rmse_8": 0.21006,
+          "rmse_12": 0.17814,
+          "rmse_16": 0.158,
+          "rmse_24": 0.13308,
+          "rmse_32": 0.11767,
+          "rmse_48": 0.09854,
+          "rmse_final": 0.09854,
+          "rmse_std": 0.00019,
+          "rel_mse_final": 0.05238,
+          "mean_luma": 0.0629
+        },
+        {
+          "policy": "decay",
+          "rmse_8": 0.2002,
+          "rmse_12": 0.16919,
+          "rmse_16": 0.14995,
+          "rmse_24": 0.1262,
+          "rmse_32": 0.11199,
+          "rmse_48": 0.09477,
+          "rmse_final": 0.09477,
+          "rmse_std": 9e-05,
+          "rel_mse_final": 0.04984,
+          "mean_luma": 0.0636
+        },
+        {
+          "policy": "rebuild",
+          "rmse_8": 0.18845,
+          "rmse_12": 0.16118,
+          "rmse_16": 0.14411,
+          "rmse_24": 0.12294,
+          "rmse_32": 0.10974,
+          "rmse_48": 0.09369,
+          "rmse_final": 0.09369,
+          "rmse_std": 0.00034,
+          "rel_mse_final": 0.04877,
+          "mean_luma": 0.0633
+        }
+      ],
+      "panel": "/outputs/images/move_window_panel.png",
+      "chart": "/outputs/images/move_window_chart.png"
+    },
+    {
+      "kind": "uniform",
+      "label": "较均匀室内（宽大顶灯）",
+      "train_spp": 24,
+      "test_spp": 48,
+      "seeds": 3,
+      "rows": [
+        {
+          "policy": "bsdf",
+          "rmse_8": 0.06852,
+          "rmse_12": 0.05679,
+          "rmse_16": 0.04981,
+          "rmse_24": 0.04134,
+          "rmse_32": 0.03628,
+          "rmse_48": 0.03026,
+          "rmse_final": 0.03026,
+          "rmse_std": 6e-05,
+          "rel_mse_final": 0.01304,
+          "mean_luma": 0.7724
+        },
+        {
+          "policy": "stale",
+          "rmse_8": 0.07617,
+          "rmse_12": 0.06302,
+          "rmse_16": 0.05505,
+          "rmse_24": 0.04534,
+          "rmse_32": 0.03961,
+          "rmse_48": 0.03282,
+          "rmse_final": 0.03282,
+          "rmse_std": 0.00019,
+          "rel_mse_final": 0.01512,
+          "mean_luma": 0.7724
+        },
+        {
+          "policy": "decay",
+          "rmse_8": 0.07503,
+          "rmse_12": 0.06193,
+          "rmse_16": 0.05413,
+          "rmse_24": 0.04468,
+          "rmse_32": 0.03907,
+          "rmse_48": 0.03245,
+          "rmse_final": 0.03245,
+          "rmse_std": 0.00011,
+          "rel_mse_final": 0.01484,
+          "mean_luma": 0.7728
+        },
+        {
+          "policy": "rebuild",
+          "rmse_8": 0.07576,
+          "rmse_12": 0.06244,
+          "rmse_16": 0.05437,
+          "rmse_24": 0.04495,
+          "rmse_32": 0.03929,
+          "rmse_48": 0.03259,
+          "rmse_final": 0.03259,
+          "rmse_std": 8e-05,
+          "rel_mse_final": 0.01498,
+          "mean_luma": 0.7722
+        }
+      ],
+      "panel": "/outputs/images/move_uniform_panel.png",
+      "chart": "/outputs/images/move_uniform_chart.png"
+    }
+  ],
+  "gallery": [
+    "/outputs/images/ablation_uniform_neeoff.png",
+    "/outputs/images/ablation_window_neeoff.png",
+    "/outputs/images/dist_uniform_probe.png",
+    "/outputs/images/dist_window_probe.png",
+    "/outputs/images/fixed_uniform_convergence.png",
+    "/outputs/images/fixed_uniform_panel.png",
+    "/outputs/images/fixed_window_convergence.png",
+    "/outputs/images/fixed_window_panel.png",
+    "/outputs/images/move_uniform_chart.png",
+    "/outputs/images/move_uniform_panel.png",
+    "/outputs/images/move_window_chart.png",
+    "/outputs/images/move_window_panel.png",
+    "/outputs/images/ref_uniform_A.png",
+    "/outputs/images/ref_uniform_B.png",
+    "/outputs/images/ref_window_A.png",
+    "/outputs/images/ref_window_B.png"
+  ]
+}

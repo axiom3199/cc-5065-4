@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316202e'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%235aa9ff' stroke-width='2.4'/%3E%3Cpath d='M16 16 L16 7 A9 9 0 0 1 24.5 19 Z' fill='%2346d19a'/%3E%3C/svg%3E" />
+<title>DirGuide · 间接光方向引导实验台</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">◩</span>
+    <div>
+      <h1>DirGuide 间接光方向引导实验台</h1>
+      <p class="sub">空间区域在线学习方向分布 · 真实混合概率 · 衰减 / 重建 / 保守覆盖</p>
+    </div>
+  </div>
+  <div class="conn">
+    <span id="statusDot" class="dot"></span><span id="statusText">内核连接中…</span>
+  </div>
+</header>
+
+<div id="errorBar" class="errorbar hidden"></div>
+
+<main class="layout">
+  <!-- ============== 左：内核 schema 驱动的控件 ============== -->
+  <aside class="panel controls">
+    <section>
+      <h2>实验场景</h2>
+      <div id="sceneButtons" class="seg"></div>
+    </section>
+
+    <section>
+      <h2>引导策略</h2>
+      <select id="strategySelect" class="select"></select>
+      <p id="strategyDesc" class="desc"></p>
+    </section>
+
+    <section id="sliders" class="sliders"></section>
+
+    <section class="actions">
+      <button id="playBtn" class="btn primary">▶ 连续渲染</button>
+      <button id="stepBtn" class="btn">单步 +1 spp</button>
+      <button id="moveBtn" class="btn warn">⇄ 移动光源 A↔B</button>
+      <button id="resetBtn" class="btn ghost">重置图像与引导</button>
+      <button id="saveVerBtn" class="btn ghost">💾 保存当前分布版本</button>
+    </section>
+
+    <section>
+      <h2>引导内核反馈</h2>
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+    </section>
+  </aside>
+
+  <!-- ============== 中：渲染 + 收敛 ============== -->
+  <section class="center">
+    <div class="viewport-wrap">
+      <div class="viewport" id="viewport">
+        <img id="renderImg" alt="引导积分渲染结果，点击选择位置" />
+        <div id="probeMarker" class="probe-marker hidden"></div>
+        <div class="hud" id="hud">尚未渲染</div>
+      </div>
+      <p class="clickhint">在图像上点击任意位置 → 右侧显示该空间区域的方向分布</p>
+    </div>
+
+    <div class="stats" id="statsBar"></div>
+
+    <div class="charts">
+      <div class="chart-card">
+        <h3>照明收敛 · 显示域 RMSE（相对高采样参考图）</h3>
+        <canvas id="rmseChart" width="560" height="180"></canvas>
+        <p class="chart-note" id="rmseNote"></p>
+      </div>
+      <div class="chart-card">
+        <h3>平均亮度均值收敛</h3>
+        <canvas id="meanChart" width="560" height="180"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 右：方向分布检查器 ============== -->
+  <aside class="panel inspector">
+    <h2>选定位置的方向分布</h2>
+    <p class="desc" id="probeInfo">点击渲染图选择位置。</p>
+    <canvas id="distCanvas" width="380" height="210"></canvas>
+    <div class="legend">
+      <span>极角 θ（上=+Y）</span>
+      <span>方位角 φ →</span>
+    </div>
+    <div id="distMetrics" class="metrics"></div>
+
+    <section class="versions">
+      <h3>分布版本（检查 / 回放）</h3>
+      <div class="version-row">
+        <select id="versionSelect" class="select small"></select>
+        <button id="loadVerBtn" class="btn tiny">载入查看</button>
+        <button id="liveVerBtn" class="btn tiny ghost">返回实时</button>
+      </div>
+      <div id="versionMeta" class="desc"></div>
+    </section>
+  </aside>
+</main>
+
+<!-- ============== 结果区：等预算实验 ============== -->
+<section class="results">
+  <div class="results-head">
+    <h2>实验结果区 · 相同预算下的均值与误差</h2>
+    <div class="tabs" id="resultTabs">
+      <button class="tab active" data-tab="fixed">固定光 · 引导 vs 基线</button>
+      <button class="tab" data-tab="move">移灯 · 陈旧/衰减/重建</button>
+      <button class="tab" data-tab="coverage">覆盖性验证</button>
+      <button class="tab" data-tab="files">图像与版本文件</button>
+    </div>
+  </div>
+  <div class="tab-body" id="tab-fixed"><p class="desc">加载中…</p></div>
+  <div class="tab-body hidden" id="tab-move"></div>
+  <div class="tab-body hidden" id="tab-coverage"></div>
+  <div class="tab-body hidden" id="tab-files"></div>
+</section>
+
+<footer class="footer">
+  <p>
+    界面启动：在 <code>/workspace</code> 下运行
+    <code>python3 run_ui.py --port 8765</code>，浏览器打开
+    <code>http://127.0.0.1:8765/</code>。
+    批量实验：<code>python3 run_experiments.py</code>。
+  </p>
+  <p class="desc">引导表只改变提议分布；像素能量始终来自使用真实混合 pdf 的路径估计，缓存辐射不会直接成为当前像素结果。</p>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

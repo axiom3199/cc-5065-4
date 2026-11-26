@@ -1,0 +1,40 @@
+{
+  "all_ok": true,
+  "checks": [
+    {
+      "name": "guide_pdf_normalizes",
+      "ok": true,
+      "max_abs_error": 1.1102230246251565e-16,
+      "tolerance": 0.02
+    },
+    {
+      "name": "uniform_floor_every_direction",
+      "ok": true,
+      "min_guide_pdf": 0.015915494309189534,
+      "guaranteed_floor": 0.015915494309189534
+    },
+    {
+      "name": "true_mixture_pdf_and_coverage",
+      "ok": true,
+      "pdf_eval_max_abs_diff": 0.0,
+      "hemisphere_support_ok": true,
+      "bin_coverage_fraction": 1.0,
+      "bins_visited": 288,
+      "bins_total": 288
+    },
+    {
+      "name": "mixture_estimator_known_integral",
+      "ok": true,
+      "estimate": 5.864307648190171,
+      "analytic": 5.864306286700947,
+      "relative_error": 2.3216543575824963e-07
+    },
+    {
+      "name": "cosine_pdf_sanity",
+      "ok": true,
+      "estimate": 3.141592653589793,
+      "analytic": 3.141592653589793,
+      "relative_error": 0.0
+    }
+  ]
+}
