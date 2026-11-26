@@ -17,7 +17,7 @@ from typing import Any
 import numpy as np
 from PIL import Image
 
-from .experiment import IMAGE_DIR, METRICS_DIR, VERSION_DIR, _tag
+from .experiment import ACCEPTANCE_DIR, IMAGE_DIR, METRICS_DIR, VERSION_DIR, _tag
 from .guiding import DirectionGuide
 from .imaging import exposure_from_reference, tonemap, to_uint8
 from .session import STRATEGY_INFO, RenderSession
@@ -83,8 +83,21 @@ class Kernel:
                 {"cmd": "reset", "label": "重置全部"},
                 {"cmd": "save_version", "label": "保存分布版本"},
             ],
+            "regression_cases": [
+                {"case": "stale", "label": "回归样例：移灯后保留旧表",
+                 "desc": "训练后移灯并保留旧方向表（含均匀底），观察能量恢复与方向分布。"},
+                {"case": "decay", "label": "回归样例：移灯后指数衰减",
+                 "desc": "旧观察按半衰期衰减，逐步遗忘旧光源方向。"},
+                {"case": "rebuild", "label": "回归样例：移灯后清空重建",
+                 "desc": "移灯即清空方向表，从均匀底重新学习新光路。"},
+            ],
+            "acceptance": {
+                "cmd": "run_acceptance",
+                "label": "运行统计正确性验收",
+                "desc": "解析小场景 + 中途开灯夹具：均值置信区间、零支持反例、注入错误密度。",
+            },
             "dirs": {"images": IMAGE_DIR, "metrics": METRICS_DIR,
-                      "versions": VERSION_DIR},
+                      "versions": VERSION_DIR, "acceptance": ACCEPTANCE_DIR},
         }
 
     # ----------------------------------------------------------- references
@@ -166,6 +179,54 @@ class Kernel:
                     path = self.session.guide.save_version(VERSION_DIR, label)
                     self.session._note("version", f"分布版本已保存: {os.path.basename(path)}")
                     return self.state() | {"saved_path": path}
+
+                if cmd == "run_acceptance":
+                    # Run the statistical-correctness acceptance set for real
+                    # and persist the report; the UI renders what this run
+                    # actually measured, never canned numbers.
+                    from .acceptance import run_quick_suite
+                    os.makedirs(ACCEPTANCE_DIR, exist_ok=True)
+                    report = run_quick_suite(ACCEPTANCE_DIR, quick=True)
+                    out = os.path.join(METRICS_DIR, "acceptance.json")
+                    os.makedirs(METRICS_DIR, exist_ok=True)
+                    with open(out, "w", encoding="utf-8") as fh:
+                        json.dump(report, fh, ensure_ascii=False, indent=2)
+                    n_ok = sum(1 for c in report["checks"] if c.get("ok"))
+                    self.session._note(
+                        "acceptance",
+                        f"统计验收完成: {n_ok}/{len(report['checks'])} 项通过，"
+                        f"报告见 outputs/metrics/acceptance.json")
+                    return self.state() | {
+                        "acceptance": {
+                            "all_ok": report["all_ok"],
+                            "n_checks": len(report["checks"]),
+                            "n_ok": n_ok,
+                            "elapsed_s": report["elapsed_s"],
+                        }
+                    }
+
+                if cmd == "load_regression_case":
+                    # Open a direction-guiding regression example in the live
+                    # lighting-experiment window: train on placement A, then
+                    # move the light with the requested staleness policy.
+                    # Everything below drives the real RenderSession; the
+                    # user keeps stepping/switching strategies manually and
+                    # watches lighting convergence and direction maps.
+                    case = str(payload.get("case", "stale"))
+                    if case not in ("stale", "decay", "rebuild", "guide"):
+                        raise KernelError(f"未知回归样例: {case}")
+                    train_spp = max(1, min(int(payload.get("train_spp", 4)), 16))
+                    s = self.session
+                    s.reset_all()
+                    s.set_strategy(case)
+                    for _ in range(train_spp):
+                        s.step_spp()
+                    msg = s.move_light()
+                    self._load_reference_for_current()
+                    s._note("regression",
+                            f"回归样例已载入：{case}，训练 {train_spp} spp 后移灯；"
+                            "可继续单步/连续渲染并点击图像查看方向分布")
+                    return self.state() | {"move_message": msg}
 
                 if cmd == "list_versions":
                     return {"versions": self.list_versions()}
@@ -273,6 +334,15 @@ class Kernel:
             self.results_cache_mtime = mtime
         self.results_cache["available"] = True
         return self.results_cache
+
+    def acceptance_report(self) -> dict[str, Any]:
+        path = os.path.join(METRICS_DIR, "acceptance.json")
+        if not os.path.exists(path):
+            return {"available": False}
+        with open(path, encoding="utf-8") as fh:
+            report = json.load(fh)
+        report["available"] = True
+        return report
 
 
 KERNEL = Kernel()

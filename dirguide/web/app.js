@@ -165,6 +165,102 @@ function syncControlValues(k) {
 
 function syncSceneActive() { /* updated via applyState */ }
 
+/* -------------------------------------------------- acceptance / regression */
+function buildRegressionUI(schema) {
+  const wrap = $("regressionCases");
+  wrap.innerHTML = "";
+  (schema.regression_cases || []).forEach((c) => {
+    const b = document.createElement("button");
+    b.className = "btn tiny";
+    b.textContent = c.label;
+    b.title = c.desc || "";
+    b.onclick = async () => {
+      setPlaying(false);
+      try {
+        showError(null);
+        const r = await post("load_regression_case", { case: c.case });
+        applyState(r.result);
+        await refreshImage();
+        await refreshDistribution();
+      } catch (e) { reportError(e); }
+    };
+    wrap.appendChild(b);
+  });
+  $("acceptanceBtn").onclick = async () => {
+    const btn = $("acceptanceBtn");
+    btn.disabled = true;
+    btn.textContent = "⏳ 验收运行中（真实采样，约十秒）…";
+    try {
+      showError(null);
+      const r = await post("run_acceptance");
+      applyState(r.result);
+      await loadAcceptance();
+      document.querySelector('.tab[data-tab="acceptance"]').click();
+    } catch (e) { reportError(e); }
+    finally {
+      btn.disabled = false;
+      btn.textContent = "▶ 运行统计正确性验收";
+    }
+  };
+}
+
+function ciText(ci, ref) {
+  if (!ci) return "";
+  const fmt = (v) => Number(v).toFixed(4);
+  return `均值 ${fmt(ci.mean)}，95% CI [${fmt(ci.lo)}, ${fmt(ci.hi)}]` +
+    (ref !== undefined ? `，独立参照 ${fmt(ref)}` : "") +
+    (ci.n ? `，n=${ci.n}` : "");
+}
+
+async function loadAcceptance() {
+  const tab = $("tab-acceptance");
+  let data;
+  try { data = await api("/api/acceptance"); }
+  catch (e) {
+    tab.innerHTML = `<p class="notice">验收报告不可用：${escapeHtml(e.message)}</p>`;
+    return;
+  }
+  if (!data.available) {
+    tab.innerHTML = `<p class="notice">尚未生成验收报告。点击左侧
+      <b>运行统计正确性验收</b>（真实重算，非固定数据），或执行
+      <code>python3 -m dirguide.acceptance</code>。</p>`;
+    return;
+  }
+  const head = `<p class="desc">生成于 ${escapeHtml(data.generated_at)} · 用时
+    ${data.elapsed_s}s · all_ok =
+    <b style="color:${data.all_ok ? "#46d19a" : "#ff6b6b"}">${data.all_ok}</b>。
+    均值置信区间来自独立试验/区间，参照值由解析小场景闭式推导；每项附执行证据。</p>`;
+  const rows = (data.checks || []).map((c) => {
+    const ok = !!c.ok;
+    const ci = c.grand_ci || c.mean_ci ||
+      (c.mean_image_ci) || (c.difference_ci) || null;
+    const ref = c.reference_luminance ??
+      (c.mean_image_ci && c.mean_image_ci.reference) ??
+      (c.grand_ci && c.reference_luminance) ??
+      (c.difference_ci ? 0.0 : undefined);
+    let extra = "";
+    if (c.verdict) extra += ` verdict=${escapeHtml(c.verdict)}`;
+    if (c.missing_energy_fraction !== undefined)
+      extra += ` 遗漏能量 ${(100 * c.missing_energy_fraction).toFixed(1)}%`;
+    if (c.variance_ratio !== undefined)
+      extra += ` 方差比 ${Number(c.variance_ratio).toFixed(2)}`;
+    if (c.chi2 !== undefined)
+      extra += ` chi2=${Number(c.chi2).toFixed(1)} df=${c.df}`;
+    if (c.first_anomalous_component)
+      extra += ` 首个异常光源分量=${escapeHtml(c.first_anomalous_component.light)}` +
+        `@区间${c.first_anomalous_component.interval}`;
+    const ev = ci && ci.evidence
+      ? `<span class="desc">证据(试验均值): ${ci.evidence.map((v) => Number(v).toFixed(4)).join(", ")}</span><br>`
+      : "";
+    return `<div class="check-item ${ok ? "ok" : "bad"}">` +
+      `${ok ? "✅" : "❌"} <b>${escapeHtml(c.name)}</b>${extra}<br>` +
+      (ci ? `<span class="desc">${ciText(ci, ref)}</span><br>` : "") +
+      ev + `</div>`;
+  }).join("");
+  tab.innerHTML = head + rows;
+}
+
+
 /* ------------------------------------------------------------- rendering */
 async function refreshImage() {
   const img = $("renderImg");
@@ -648,7 +744,7 @@ function bindStatic() {
   document.querySelectorAll(".tab").forEach((t) => t.onclick = () => {
     document.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
     t.classList.add("active");
-    ["fixed", "move", "coverage", "files"].forEach((name) =>
+    ["fixed", "move", "acceptance", "coverage", "files"].forEach((name) =>
       $("tab-" + name).classList.toggle("hidden", name !== t.dataset.tab));
   });
   window.addEventListener("resize", () => state.kernel && drawCharts(state.kernel));
@@ -660,6 +756,7 @@ function bindStatic() {
   try {
     const schema = await api("/api/schema");
     buildSchemaUI(schema);
+    buildRegressionUI(schema);
     const st = await api("/api/state");
     applyState(st.state);
     state.probe = { px: Math.floor(st.state.width * 0.5), py: Math.floor(st.state.height * 0.62) };
@@ -667,6 +764,7 @@ function bindStatic() {
     await refreshDistribution();
     await refreshVersions();
     await loadResults();
+    await loadAcceptance();
     // Gentle state sync in case another tab drives the kernel.
     setInterval(async () => {
       if (state.busy || state.playing) return;

@@ -1,0 +1,490 @@
+{
+  "schema": "dirguide.acceptance.v1",
+  "generated_at": "2026-11-26 08:15:08",
+  "elapsed_s": 4.81,
+  "quick": true,
+  "all_ok": true,
+  "checks": [
+    {
+      "name": "mixture_pdf_normalizes",
+      "ok": true,
+      "mean_ci": {
+        "mean": 0.9980168480562686,
+        "lo": 0.981156154464309,
+        "hi": 1.014877541648228,
+        "n": 100000,
+        "reference": 1.0
+      },
+      "guide_min_pdf": 0.01193662073189215,
+      "bsdf_integral": 1.0040336452596113
+    },
+    {
+      "name": "sampling_distribution_chi2",
+      "ok": true,
+      "chi2": 1170.7584188745714,
+      "df": 1151,
+      "window": [
+        959.0833514256775,
+        1342.9166485743226
+      ],
+      "expected_mass_total": 0.9999999999999999,
+      "n": 150000
+    },
+    {
+      "name": "image_sweep_means",
+      "ok": true,
+      "width": 20,
+      "height": 12,
+      "n_per_pixel": 1500,
+      "max_abs_z": 2.887094494724989,
+      "frac_pixels_within_5sigma": 1.0,
+      "mean_image_ci": {
+        "mean": 0.42739202402817605,
+        "lo": 0.42568992428981883,
+        "hi": 0.4290941237665333,
+        "n": 240,
+        "reference": 0.42590426787344615
+      },
+      "artifact": "/workspace/outputs/acceptance/image_sweep.png"
+    },
+    {
+      "name": "mid_light_energy_recovered",
+      "ok": true,
+      "verdict": "accept",
+      "grand_ci": {
+        "mean": 0.4579700944249721,
+        "half_width": 0.009633979468518253,
+        "lo": 0.44833611495645387,
+        "hi": 0.46760407389349035,
+        "n": 5,
+        "std": 0.007760170383805515,
+        "confidence": 0.95,
+        "evidence": [
+          0.4663352492915294,
+          0.464470553788516,
+          0.4533846131612082,
+          0.4475963875098919,
+          0.45806366837371487
+        ]
+      },
+      "reference_luminance": 0.4572042554892767,
+      "support": {
+        "bins": 12,
+        "pdf_min": 0.01193662073189215,
+        "pdf_max": 0.01193662073189215,
+        "mass": 0.0013336195463866754
+      },
+      "missing_energy_fraction": -0.0016750476980488009,
+      "detail": {
+        "name": "mid_light_on",
+        "eta": 0.15,
+        "lam": 0.6,
+        "reference_luminance": 0.4572042554892767,
+        "new_light_reference": 0.12146127553385057,
+        "support": {
+          "bins": 12,
+          "pdf_min": 0.01193662073189215,
+          "pdf_max": 0.01193662073189215,
+          "mass": 0.0013336195463866754
+        },
+        "zero_support": false,
+        "provenance_ok": true,
+        "intervals": [
+          {
+            "label": "interval0",
+            "n": 10000,
+            "lum_mean": 0.4663352492915294,
+            "lum_se": 0.008529567950052415,
+            "component_mean": 0.1264778661331901,
+            "component_se": 0.008163425412972049,
+            "used_version": 3
+          },
+          {
+            "label": "interval1",
+            "n": 10000,
+            "lum_mean": 0.464470553788516,
+            "lum_se": 0.007334451080341713,
+            "component_mean": 0.1269076873141487,
+            "component_se": 0.00688933422937856,
+            "used_version": 4
+          },
+          {
+            "label": "interval2",
+            "n": 10000,
+            "lum_mean": 0.4533846131612082,
+            "lum_se": 0.0063927163461297,
+            "component_mean": 0.12577807649028325,
+            "component_se": 0.0058212536472027855,
+            "used_version": 5
+          },
+          {
+            "label": "interval3",
+            "n": 10000,
+            "lum_mean": 0.4475963875098919,
+            "lum_se": 0.0060596986678454964,
+            "component_mean": 0.11390207468669064,
+            "component_se": 0.0053638267326499445,
+            "used_version": 6
+          },
+          {
+            "label": "interval4",
+            "n": 10000,
+            "lum_mean": 0.45806366837371487,
+            "lum_se": 0.005909910166385106,
+            "component_mean": 0.12368635500752662,
+            "component_se": 0.00521842728044064,
+            "used_version": 7
+          }
+        ],
+        "grand_ci": {
+          "mean": 0.4579700944249721,
+          "half_width": 0.009633979468518253,
+          "lo": 0.44833611495645387,
+          "hi": 0.46760407389349035,
+          "n": 5,
+          "std": 0.007760170383805515,
+          "confidence": 0.95,
+          "evidence": [
+            0.4663352492915294,
+            0.464470553788516,
+            0.4533846131612082,
+            0.4475963875098919,
+            0.45806366837371487
+          ]
+        },
+        "covers_reference": true,
+        "stable_across_intervals": false,
+        "stable_but_underestimated": false,
+        "missing_energy_fraction": -0.0016750476980488009,
+        "converged": true,
+        "verdict": "accept",
+        "first_anomalous_component": null,
+        "eval_records_separate": true,
+        "train_record_continues": true
+      }
+    },
+    {
+      "name": "zero_support_requires_rebuild",
+      "ok": true,
+      "verdict": "rebuild_required",
+      "converged": false,
+      "stable_but_underestimated": true,
+      "missing_energy_fraction": 0.29501937081932966,
+      "first_anomalous_component": {
+        "light": "B_new",
+        "interval": 0,
+        "expected_luminance": 0.12146127553385057,
+        "observed_luminance": 0.0,
+        "observed_se": 0.0,
+        "support_pdf_min": 0.0,
+        "support_mass": 0.0,
+        "guide_version": 3
+      },
+      "anomaly_artifact": "/workspace/outputs/acceptance/first_anomalous_component.json",
+      "detail": {
+        "name": "mid_light_on",
+        "eta": 0.0,
+        "lam": 1.0,
+        "reference_luminance": 0.4572042554892767,
+        "new_light_reference": 0.12146127553385057,
+        "support": {
+          "bins": 12,
+          "pdf_min": 0.0,
+          "pdf_max": 0.0,
+          "mass": 0.0
+        },
+        "zero_support": true,
+        "provenance_ok": true,
+        "intervals": [
+          {
+            "label": "interval0",
+            "n": 10000,
+            "lum_mean": 0.32326961085761885,
+            "lum_se": 0.0014699416609169366,
+            "component_mean": 0.0,
+            "component_se": 0.0,
+            "used_version": 3
+          },
+          {
+            "label": "interval1",
+            "n": 10000,
+            "lum_mean": 0.3210487099870245,
+            "lum_se": 0.0013674352098559225,
+            "component_mean": 0.0,
+            "component_se": 0.0,
+            "used_version": 4
+          },
+          {
+            "label": "interval2",
+            "n": 10000,
+            "lum_mean": 0.3206381774336926,
+            "lum_se": 0.001352998752730069,
+            "component_mean": 0.0,
+            "component_se": 0.0,
+            "used_version": 5
+          },
+          {
+            "label": "interval3",
+            "n": 10000,
+            "lum_mean": 0.32364199496189566,
+            "lum_se": 0.0015276563312034252,
+            "component_mean": 0.0,
+            "component_se": 0.0,
+            "used_version": 6
+          },
+          {
+            "label": "interval4",
+            "n": 10000,
+            "lum_mean": 0.3230022252543193,
+            "lum_se": 0.0014203533816482521,
+            "component_mean": 0.0,
+            "component_se": 0.0,
+            "used_version": 7
+          }
+        ],
+        "grand_ci": {
+          "mean": 0.3223201436989102,
+          "half_width": 0.0017066833659661698,
+          "lo": 0.320613460332944,
+          "hi": 0.3240268270648764,
+          "n": 5,
+          "std": 0.0013747334374526322,
+          "confidence": 0.95,
+          "evidence": [
+            0.32326961085761885,
+            0.3210487099870245,
+            0.3206381774336926,
+            0.32364199496189566,
+            0.3230022252543193
+          ]
+        },
+        "covers_reference": false,
+        "stable_across_intervals": true,
+        "stable_but_underestimated": true,
+        "missing_energy_fraction": 0.29501937081932966,
+        "converged": false,
+        "verdict": "rebuild_required",
+        "first_anomalous_component": {
+          "light": "B_new",
+          "interval": 0,
+          "expected_luminance": 0.12146127553385057,
+          "observed_luminance": 0.0,
+          "observed_se": 0.0,
+          "support_pdf_min": 0.0,
+          "support_mass": 0.0,
+          "guide_version": 3
+        },
+        "eval_records_separate": true,
+        "train_record_continues": true,
+        "anomaly_artifact": "/workspace/outputs/acceptance/first_anomalous_component.json"
+      }
+    },
+    {
+      "name": "bias_variance_clean",
+      "corrupt": null,
+      "n_trials": 6,
+      "train_n": 4000,
+      "eval_n": 8000,
+      "reference_luminance": 0.4572042554892767,
+      "mean_ci": {
+        "mean": 0.4622657113742213,
+        "half_width": 0.00821925003374583,
+        "lo": 0.45404646134047544,
+        "hi": 0.47048496140796714,
+        "n": 6,
+        "std": 0.007830792940890976,
+        "confidence": 0.95,
+        "evidence": [
+          0.45515259618021847,
+          0.46089769747412823,
+          0.45740033643975464,
+          0.4560374157754977,
+          0.4718424086969884,
+          0.47226381367874026
+        ]
+      },
+      "bias_ok": true,
+      "empirical_var": 6.132131808310793e-05,
+      "predicted_var": 4.953466897504253e-05,
+      "variance_ratio": 1.2379474689535923,
+      "variance_ok": true,
+      "ok": true
+    },
+    {
+      "name": "injected_stale_density_caught",
+      "ok": true,
+      "mean_ci": {
+        "mean": 3.1349634953418537,
+        "half_width": 0.052228528426181545,
+        "lo": 3.0827349669156723,
+        "hi": 3.187192023768035,
+        "n": 6,
+        "std": 0.049760110719794366,
+        "confidence": 0.95,
+        "evidence": [
+          3.15478350962609,
+          3.139525188388618,
+          3.1817599661163953,
+          3.0486700868078764,
+          3.10923444689227,
+          3.1758077742198716
+        ]
+      },
+      "reference_luminance": 0.4572042554892767,
+      "bias_ok": false,
+      "note": "corrupted run must NOT pass the bias assertion"
+    },
+    {
+      "name": "injected_scaled_density_caught",
+      "ok": true,
+      "mean_ci": {
+        "mean": 0.30817714091614773,
+        "half_width": 0.005479500022497241,
+        "lo": 0.3026976408936505,
+        "hi": 0.313656640938645,
+        "n": 6,
+        "std": 0.005220528627260671,
+        "confidence": 0.95,
+        "evidence": [
+          0.3034350641201459,
+          0.307265131649419,
+          0.3049335576265036,
+          0.30402494385033163,
+          0.3145616057979917,
+          0.3148425424524945
+        ]
+      },
+      "reference_luminance": 0.4572042554892767,
+      "bias_ok": false,
+      "note": "corrupted run must NOT pass the bias assertion"
+    },
+    {
+      "name": "training_size_invariance",
+      "ok": true,
+      "train_sizes": [
+        0,
+        1500,
+        12000
+      ],
+      "reference_luminance": 0.4572042554892767,
+      "all_cis_cover": true,
+      "max_relative_deviation": 0.020860612151936228,
+      "studies": [
+        {
+          "name": "bias_variance",
+          "corrupt": null,
+          "n_trials": 5,
+          "train_n": 0,
+          "eval_n": 6000,
+          "reference_luminance": 0.4572042554892767,
+          "mean_ci": {
+            "mean": 0.4476666948413001,
+            "half_width": 0.02081513306773771,
+            "lo": 0.4268515617735624,
+            "hi": 0.4684818279090378,
+            "n": 5,
+            "std": 0.0167665895173506,
+            "confidence": 0.95,
+            "evidence": [
+              0.44451884404727054,
+              0.435892533430387,
+              0.42820808522737436,
+              0.4630845514934393,
+              0.46662946000802985
+            ]
+          },
+          "bias_ok": true,
+          "empirical_var": 0.00028111852404333093,
+          "predicted_var": 0.00042758385891707656,
+          "variance_ratio": 0.6574582229444017,
+          "variance_ok": true,
+          "ok": true
+        },
+        {
+          "name": "bias_variance",
+          "corrupt": null,
+          "n_trials": 5,
+          "train_n": 1500,
+          "eval_n": 6000,
+          "reference_luminance": 0.4572042554892767,
+          "mean_ci": {
+            "mean": 0.453884309149056,
+            "half_width": 0.009009511888292595,
+            "lo": 0.4448747972607634,
+            "hi": 0.46289382103734855,
+            "n": 5,
+            "std": 0.007257161752995222,
+            "confidence": 0.95,
+            "evidence": [
+              0.4644030220551102,
+              0.4548984957897685,
+              0.4513606078719909,
+              0.4442786416835955,
+              0.454480778344815
+            ]
+          },
+          "bias_ok": true,
+          "empirical_var": 5.2666396709136685e-05,
+          "predicted_var": 0.00017395677273862576,
+          "variance_ratio": 0.30275565521251196,
+          "variance_ok": false,
+          "ok": false
+        },
+        {
+          "name": "bias_variance",
+          "corrupt": null,
+          "n_trials": 5,
+          "train_n": 12000,
+          "eval_n": 6000,
+          "reference_luminance": 0.4572042554892767,
+          "mean_ci": {
+            "mean": 0.46300364503655517,
+            "half_width": 0.008928490974735583,
+            "lo": 0.4540751540618196,
+            "hi": 0.47193213601129075,
+            "n": 5,
+            "std": 0.007191899407781744,
+            "confidence": 0.95,
+            "evidence": [
+              0.4580101341273447,
+              0.4541513313767814,
+              0.4726616397360599,
+              0.46597768465327755,
+              0.4642174352893123
+            ]
+          },
+          "bias_ok": true,
+          "empirical_var": 5.17234170916514e-05,
+          "predicted_var": 4.784535148440122e-05,
+          "variance_ratio": 1.0810541774056048,
+          "variance_ok": true,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "unguided_cross_check",
+      "ok": true,
+      "n_rounds": 5,
+      "reference_luminance": 0.4572042554892767,
+      "difference_ci": {
+        "mean": -0.0016732712594332067,
+        "half_width": 0.008142676362371643,
+        "lo": -0.00981594762180485,
+        "hi": 0.0064694051029384365,
+        "n": 5,
+        "std": 0.006558925743891825,
+        "confidence": 0.95,
+        "evidence": [
+          0.006280545046221997,
+          0.00410062482551482,
+          -0.0035754823240971567,
+          -0.008570224668852267,
+          -0.006601819175953427
+        ]
+      },
+      "agrees_with_unguided": true,
+      "guided_over_unguided_var": 0.28207156893823454
+    }
+  ]
+}

@@ -1,17 +1,15 @@
 {
-  "generated_at": "2026-11-26 02:06:03",
-  "elapsed_s": 840.9,
+  "generated_at": "2026-11-26 08:16:13",
+  "elapsed_s": 53.8,
   "budgets": {
     "width": 256,
     "height": 160,
-    "reference_spp": 1024,
-    "fixed_spp": 64,
-    "train_spp": 24,
-    "test_spp": 48,
+    "reference_spp": 128,
+    "fixed_spp": 16,
+    "train_spp": 6,
+    "test_spp": 12,
     "seeds": [
-      101,
-      202,
-      303
+      101
     ],
     "lam": 0.35,
     "eta": 0.15,
@@ -62,122 +60,110 @@
     {
       "kind": "window",
       "label": "小窗口集中光束（含门洞，间接光路径狭窄）",
-      "budget_spp": 64,
-      "seeds": 3,
+      "budget_spp": 16,
+      "seeds": 1,
       "rows": [
         {
           "strategy": "bsdf",
           "label": "纯 BSDF 采样",
-          "rmse_8": 0.20082,
-          "rmse_16": 0.15488,
-          "rmse_32": 0.11822,
-          "rmse_48": 0.10047,
-          "rmse_64": 0.08954,
-          "rmse_final": 0.08954,
-          "rmse_std": 0.00018,
-          "rmse_hard_roi": 0.09347,
-          "rel_mse_final": 0.04151,
+          "rmse_8": 0.20051,
+          "rmse_16": 0.15506,
+          "rmse_final": 0.15506,
+          "rmse_std": 0.0,
+          "rmse_hard_roi": 0.15806,
+          "rel_mse_final": 0.153,
           "mean_luma": 0.0622
         },
         {
           "strategy": "guide",
           "label": "方向引导混合",
-          "rmse_8": 0.19041,
-          "rmse_16": 0.14526,
-          "rmse_32": 0.11053,
-          "rmse_48": 0.0941,
-          "rmse_64": 0.08381,
-          "rmse_final": 0.08381,
-          "rmse_std": 0.0002,
-          "rmse_hard_roi": 0.08623,
-          "rel_mse_final": 0.03695,
-          "mean_luma": 0.062
+          "rmse_8": 0.18982,
+          "rmse_16": 0.14474,
+          "rmse_final": 0.14474,
+          "rmse_std": 0.0,
+          "rmse_hard_roi": 0.14469,
+          "rel_mse_final": 0.1385,
+          "mean_luma": 0.0616
         }
       ],
       "panel": "/outputs/images/fixed_window_panel.png",
       "chart": "/outputs/images/fixed_window_convergence.png",
       "dist_fig": "/outputs/images/dist_window_probe.png",
       "ablation": {
-        "spp": 48,
+        "spp": 12,
         "lam": 0.6,
         "rows": [
           {
             "strategy": "bsdf",
             "label": "纯 BSDF 采样 (NEE关)",
-            "rmse_final": 0.38669,
-            "rmse_hard_roi": 0.33223,
-            "rel_mse_final": 3.362
+            "rmse_final": 0.40711,
+            "rmse_hard_roi": 0.3229,
+            "rel_mse_final": 12.92
           },
           {
             "strategy": "guide",
             "label": "方向引导混合 (NEE关)",
-            "rmse_final": 0.31396,
-            "rmse_hard_roi": 0.27822,
-            "rel_mse_final": 4.361
+            "rmse_final": 0.38284,
+            "rmse_hard_roi": 0.31307,
+            "rel_mse_final": 25.43
           }
         ],
-        "rmse_reduction_pct": 18.8,
+        "rmse_reduction_pct": 6.0,
         "chart": "/outputs/images/ablation_window_neeoff.png"
       }
     },
     {
       "kind": "uniform",
       "label": "较均匀室内（宽大顶灯）",
-      "budget_spp": 64,
-      "seeds": 3,
+      "budget_spp": 16,
+      "seeds": 1,
       "rows": [
         {
           "strategy": "bsdf",
           "label": "纯 BSDF 采样",
-          "rmse_8": 0.06759,
-          "rmse_16": 0.04983,
-          "rmse_32": 0.0366,
-          "rmse_48": 0.03073,
-          "rmse_64": 0.02731,
-          "rmse_final": 0.02731,
-          "rmse_std": 8e-05,
-          "rmse_hard_roi": 0.02313,
-          "rel_mse_final": 0.00891,
-          "mean_luma": 0.6105
+          "rmse_8": 0.06758,
+          "rmse_16": 0.04986,
+          "rmse_final": 0.04986,
+          "rmse_std": 0.0,
+          "rmse_hard_roi": 0.04222,
+          "rel_mse_final": 0.03101,
+          "mean_luma": 0.6104
         },
         {
           "strategy": "guide",
           "label": "方向引导混合",
-          "rmse_8": 0.07614,
-          "rmse_16": 0.05463,
-          "rmse_32": 0.03957,
-          "rmse_48": 0.03301,
-          "rmse_64": 0.02922,
-          "rmse_final": 0.02922,
-          "rmse_std": 9e-05,
-          "rmse_hard_roi": 0.02481,
-          "rel_mse_final": 0.01017,
-          "mean_luma": 0.6104
+          "rmse_8": 0.07579,
+          "rmse_16": 0.05456,
+          "rmse_final": 0.05456,
+          "rmse_std": 0.0,
+          "rmse_hard_roi": 0.04747,
+          "rel_mse_final": 0.03676,
+          "mean_luma": 0.6103
         }
       ],
       "panel": "/outputs/images/fixed_uniform_panel.png",
       "chart": "/outputs/images/fixed_uniform_convergence.png",
       "dist_fig": "/outputs/images/dist_uniform_probe.png",
       "ablation": {
-        "spp": 48,
+        "spp": 12,
         "lam": 0.6,
         "rows": [
           {
             "strategy": "bsdf",
             "label": "纯 BSDF 采样 (NEE关)",
-            "rmse_final": 0.1001,
-            "rmse_hard_roi": 0.08958,
-            "rel_mse_final": 0.1006
+            "rmse_final": 0.21605,
+            "rmse_hard_roi": 0.1952,
+            "rel_mse_final": 0.3913
           },
           {
             "strategy": "guide",
             "label": "方向引导混合 (NEE关)",
-            "rmse_final": 0.09074,
-            "rmse_hard_roi": 0.07772,
-            "rel_mse_final": 0.08971
+            "rmse_final": 0.19805,
+            "rmse_hard_roi": 0.17433,
+            "rel_mse_final": 0.4667
           }
         ],
-        "rmse_reduction_pct": 9.4,
+        "rmse_reduction_pct": 8.3,
         "chart": "/outputs/images/ablation_uniform_neeoff.png"
       }
     }
@@ -186,61 +172,45 @@
     {
       "kind": "window",
       "label": "小窗口集中光束（含门洞，间接光路径狭窄）",
-      "train_spp": 24,
-      "test_spp": 48,
-      "seeds": 3,
+      "train_spp": 6,
+      "test_spp": 12,
+      "seeds": 1,
       "rows": [
         {
           "policy": "bsdf",
-          "rmse_8": 0.19801,
-          "rmse_12": 0.17059,
-          "rmse_16": 0.15356,
-          "rmse_24": 0.13178,
-          "rmse_32": 0.1179,
-          "rmse_48": 0.10063,
-          "rmse_final": 0.10063,
-          "rmse_std": 0.00044,
-          "rel_mse_final": 0.055,
-          "mean_luma": 0.0634
+          "rmse_8": 0.19859,
+          "rmse_12": 0.17126,
+          "rmse_final": 0.17126,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.2153,
+          "mean_luma": 0.0631
         },
         {
           "policy": "stale",
-          "rmse_8": 0.21006,
-          "rmse_12": 0.17814,
-          "rmse_16": 0.158,
-          "rmse_24": 0.13308,
-          "rmse_32": 0.11767,
-          "rmse_48": 0.09854,
-          "rmse_final": 0.09854,
-          "rmse_std": 0.00019,
-          "rel_mse_final": 0.05238,
-          "mean_luma": 0.0629
+          "rmse_8": 0.20175,
+          "rmse_12": 0.17111,
+          "rmse_final": 0.17111,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.2067,
+          "mean_luma": 0.0624
         },
         {
           "policy": "decay",
-          "rmse_8": 0.2002,
-          "rmse_12": 0.16919,
-          "rmse_16": 0.14995,
-          "rmse_24": 0.1262,
-          "rmse_32": 0.11199,
-          "rmse_48": 0.09477,
-          "rmse_final": 0.09477,
-          "rmse_std": 9e-05,
-          "rel_mse_final": 0.04984,
-          "mean_luma": 0.0636
+          "rmse_8": 0.19279,
+          "rmse_12": 0.16346,
+          "rmse_final": 0.16346,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.1946,
+          "mean_luma": 0.0632
         },
         {
           "policy": "rebuild",
-          "rmse_8": 0.18845,
-          "rmse_12": 0.16118,
-          "rmse_16": 0.14411,
-          "rmse_24": 0.12294,
-          "rmse_32": 0.10974,
-          "rmse_48": 0.09369,
-          "rmse_final": 0.09369,
-          "rmse_std": 0.00034,
-          "rel_mse_final": 0.04877,
-          "mean_luma": 0.0633
+          "rmse_8": 0.18797,
+          "rmse_12": 0.16062,
+          "rmse_final": 0.16062,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.189,
+          "mean_luma": 0.0638
         }
       ],
       "panel": "/outputs/images/move_window_panel.png",
@@ -249,61 +219,45 @@
     {
       "kind": "uniform",
       "label": "较均匀室内（宽大顶灯）",
-      "train_spp": 24,
-      "test_spp": 48,
-      "seeds": 3,
+      "train_spp": 6,
+      "test_spp": 12,
+      "seeds": 1,
       "rows": [
         {
           "policy": "bsdf",
-          "rmse_8": 0.06852,
-          "rmse_12": 0.05679,
-          "rmse_16": 0.04981,
-          "rmse_24": 0.04134,
-          "rmse_32": 0.03628,
-          "rmse_48": 0.03026,
-          "rmse_final": 0.03026,
-          "rmse_std": 6e-05,
-          "rel_mse_final": 0.01304,
-          "mean_luma": 0.7724
+          "rmse_8": 0.06823,
+          "rmse_12": 0.05657,
+          "rmse_final": 0.05657,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.04705,
+          "mean_luma": 0.7704
         },
         {
           "policy": "stale",
-          "rmse_8": 0.07617,
-          "rmse_12": 0.06302,
-          "rmse_16": 0.05505,
-          "rmse_24": 0.04534,
-          "rmse_32": 0.03961,
-          "rmse_48": 0.03282,
-          "rmse_final": 0.03282,
-          "rmse_std": 0.00019,
-          "rel_mse_final": 0.01512,
-          "mean_luma": 0.7724
+          "rmse_8": 0.07502,
+          "rmse_12": 0.06216,
+          "rmse_final": 0.06216,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.05654,
+          "mean_luma": 0.7723
         },
         {
           "policy": "decay",
-          "rmse_8": 0.07503,
-          "rmse_12": 0.06193,
-          "rmse_16": 0.05413,
-          "rmse_24": 0.04468,
-          "rmse_32": 0.03907,
-          "rmse_48": 0.03245,
-          "rmse_final": 0.03245,
-          "rmse_std": 0.00011,
-          "rel_mse_final": 0.01484,
-          "mean_luma": 0.7728
+          "rmse_8": 0.07459,
+          "rmse_12": 0.06142,
+          "rmse_final": 0.06142,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.05513,
+          "mean_luma": 0.7721
         },
         {
           "policy": "rebuild",
-          "rmse_8": 0.07576,
-          "rmse_12": 0.06244,
-          "rmse_16": 0.05437,
-          "rmse_24": 0.04495,
-          "rmse_32": 0.03929,
-          "rmse_48": 0.03259,
-          "rmse_final": 0.03259,
-          "rmse_std": 8e-05,
-          "rel_mse_final": 0.01498,
-          "mean_luma": 0.7722
+          "rmse_8": 0.07617,
+          "rmse_12": 0.06262,
+          "rmse_final": 0.06262,
+          "rmse_std": 0.0,
+          "rel_mse_final": 0.05767,
+          "mean_luma": 0.7725
         }
       ],
       "panel": "/outputs/images/move_uniform_panel.png",

@@ -34,6 +34,7 @@ RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "outputs"
 METRICS_DIR = os.path.join(RESULTS_DIR, "metrics")
 IMAGE_DIR = os.path.join(RESULTS_DIR, "images")
 VERSION_DIR = os.path.join(RESULTS_DIR, "versions")
+ACCEPTANCE_DIR = os.path.join(RESULTS_DIR, "acceptance")
 
 PLACEMENT_A = {
     "window": "A:left_window",

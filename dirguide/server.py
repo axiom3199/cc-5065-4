@@ -83,6 +83,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"ok": True, "versions": KERNEL.list_versions()})
             if route == "/api/results":
                 return self._json(KERNEL.experiment_results())
+            if route == "/api/acceptance":
+                return self._json(KERNEL.acceptance_report())
             if route.startswith("/outputs/"):
                 rel = route[len("/outputs/"):]
                 root = os.path.abspath(RESULTS_DIR)

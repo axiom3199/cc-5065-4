@@ -344,6 +344,8 @@ def move_study(kind: str, ref_b: np.ndarray, args) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--acceptance", action="store_true",
+                    help="只运行统计正确性验收套件（图形界面的辅助入口）")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--width", type=int, default=256)
     ap.add_argument("--height", type=int, default=160)
@@ -353,6 +355,23 @@ def main() -> int:
     ap.add_argument("--move-retain", type=float, default=0.25)
     ap.add_argument("--force-ref", action="store_true")
     args = ap.parse_args()
+
+    if args.acceptance:
+        # Auxiliary CLI entry: the same acceptance set the GUI runs lives in
+        # dirguide.acceptance; results land in outputs/metrics/acceptance.json
+        # and outputs/acceptance/.
+        from dirguide.acceptance import run_quick_suite
+        from dirguide.experiment import ACCEPTANCE_DIR
+        os.makedirs(ACCEPTANCE_DIR, exist_ok=True)
+        os.makedirs(METRICS_DIR, exist_ok=True)
+        report = run_quick_suite(ACCEPTANCE_DIR, quick=args.quick)
+        out = os.path.join(METRICS_DIR, "acceptance.json")
+        json.dump(report, open(out, "w"), ensure_ascii=False, indent=2)
+        print(f"acceptance all_ok={report['all_ok']} "
+              f"({report['elapsed_s']}s) -> {out}")
+        for c in report["checks"]:
+            print(f"  [{'OK' if c.get('ok') else 'FAIL'}] {c['name']}")
+        return 0 if report["all_ok"] else 1
 
     if args.quick:
         args.ref_spp = 128

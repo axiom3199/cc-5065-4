@@ -47,6 +47,13 @@
       <button id="saveVerBtn" class="btn ghost">💾 保存当前分布版本</button>
     </section>
 
+    <section class="regression">
+      <h2>验收与回归</h2>
+      <div id="regressionCases" class="reg-cases"></div>
+      <button id="acceptanceBtn" class="btn">▶ 运行统计正确性验收</button>
+      <p class="hint">回归样例会真实训练并移灯；之后可手动切换引导策略、连续渲染，并点击图像检查照明收敛与方向分布。验收在解析小场景上重算均值置信区间，结果见下方“统计验收”页。</p>
+    </section>
+
     <section>
       <h2>引导内核反馈</h2>
       <div id="feedback" class="feedback" aria-live="polite"></div>
@@ -109,12 +116,14 @@
     <div class="tabs" id="resultTabs">
       <button class="tab active" data-tab="fixed">固定光 · 引导 vs 基线</button>
       <button class="tab" data-tab="move">移灯 · 陈旧/衰减/重建</button>
+      <button class="tab" data-tab="acceptance">统计验收</button>
       <button class="tab" data-tab="coverage">覆盖性验证</button>
       <button class="tab" data-tab="files">图像与版本文件</button>
     </div>
   </div>
   <div class="tab-body" id="tab-fixed"><p class="desc">加载中…</p></div>
   <div class="tab-body hidden" id="tab-move"></div>
+  <div class="tab-body hidden" id="tab-acceptance"></div>
   <div class="tab-body hidden" id="tab-coverage"></div>
   <div class="tab-body hidden" id="tab-files"></div>
 </section>

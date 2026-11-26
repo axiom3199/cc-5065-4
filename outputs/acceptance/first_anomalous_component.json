@@ -1,0 +1,26 @@
+{
+  "schema": "dirguide.acceptance.anomaly.v1",
+  "saved_at": "2026-11-26 08:15:07",
+  "misuse": "stale_density_after_mid_sampling_light_on",
+  "verdict": "rebuild_required",
+  "first_anomalous_component": {
+    "light": "B_new",
+    "interval": 0,
+    "expected_luminance": 0.12146127553385057,
+    "observed_luminance": 0.0,
+    "observed_se": 0.0,
+    "support_pdf_min": 0.0,
+    "support_mass": 0.0,
+    "guide_version": 3
+  },
+  "reference_luminance": 0.4572042554892767,
+  "grand_ci": {
+    "mean": 0.3223201436989102,
+    "half_width": 0.0017066833659661698,
+    "lo": 0.320613460332944,
+    "hi": 0.3240268270648764,
+    "n": 5,
+    "std": 0.0013747334374526322,
+    "confidence": 0.95
+  }
+}
